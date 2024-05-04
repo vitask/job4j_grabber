@@ -15,6 +15,19 @@ public class HabrCareerParse {
     private static final String SUFFIX = "&q=Java%20developer&type=all";
     private static final int PAGE_COUNT = 5;
 
+    private static String retrieveDescription(String link) {
+        Connection connection = Jsoup.connect(link);
+        String description;
+        try {
+            Document document = connection.get();
+            Elements row = document.select(".faded-content__container");
+            description = row.first().text();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return description;
+    }
+
     public static void main(String[] args) throws IOException {
         for (int pageNumber = 1; pageNumber <= PAGE_COUNT; pageNumber++) {
             String fullLink = "%s%s%d%s".formatted(SOURCE_LINK, PREFIX, pageNumber, SUFFIX);
@@ -29,7 +42,8 @@ public class HabrCareerParse {
                 String vacancyName = titleElement.text();
                 String date = linkDate.attr("datetime");
                 String link = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
-                System.out.printf("%s %s %s%n", vacancyName, date, link);
+                String description = retrieveDescription(link);
+                System.out.printf("%s %s %s%n %s%n%n", vacancyName, date, link, description);
             });
         }
     }
