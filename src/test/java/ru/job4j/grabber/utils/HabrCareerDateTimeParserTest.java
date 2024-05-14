@@ -11,7 +11,7 @@ class HabrCareerDateTimeParserTest {
     @Test
     void parse() {
         HabrCareerDateTimeParser parser = new HabrCareerDateTimeParser();
-        LocalDateTime result = parser.parse("2024-04-26T18:27:36");
+        LocalDateTime result = parser.parse("2024-04-26T18:27:36+03:00");
         LocalDateTime expected = LocalDateTime.of(2024, 4, 26, 18, 27, 36);
         assertThat(expected).isEqualTo(result);
     }

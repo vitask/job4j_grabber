@@ -18,6 +18,14 @@ public class Post {
         this.created = created;
     }
 
+    public Post(int id, String vacancyName, LocalDateTime parse, String links, String description) {
+        this.id = id;
+        this.title = vacancyName;
+        this.created = parse;
+        this.link = links;
+        this.description = description;
+    }
+
     public int getId() {
         return id;
     }
