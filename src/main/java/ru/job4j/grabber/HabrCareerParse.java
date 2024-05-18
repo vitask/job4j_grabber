@@ -6,7 +6,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import ru.job4j.grabber.utils.DateTimeParser;
-import ru.job4j.grabber.utils.HabrCareerDateTimeParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +15,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class HabrCareerParse implements Parse {
 
     private static final String SOURCE_LINK = "https://career.habr.com";
-    private static final String PREFIX = "/vacancies?page=";
-    private static final String SUFFIX = "&q=Java%20developer&type=all";
     private static final int PAGE_COUNT = 5;
 
     private final DateTimeParser dateTimeParser;
@@ -37,13 +34,6 @@ public class HabrCareerParse implements Parse {
             throw new RuntimeException(e);
         }
         return description;
-    }
-
-    public static void main(String[] args) throws IOException {
-        String fullLink = "%s%s%s".formatted(SOURCE_LINK, PREFIX, SUFFIX);
-        HabrCareerParse parser = new HabrCareerParse(new HabrCareerDateTimeParser());
-        List<Post> parse = parser.parse(fullLink);
-        parse.forEach(System.out::println);
     }
 
     @Override

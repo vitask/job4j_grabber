@@ -1,9 +1,6 @@
 package ru.job4j.grabber;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -23,16 +20,6 @@ public class PsqlStore implements Store {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private static Properties readProperties() {
-        Properties config = new Properties();
-        try (InputStream in = PsqlStore.class.getClassLoader().getResourceAsStream("grabber.properties")) {
-            config.load(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return config;
     }
 
     private Post createPost(ResultSet resultSet) throws SQLException {
@@ -98,21 +85,6 @@ public class PsqlStore implements Store {
     public void close() throws Exception {
         if (connection != null) {
             connection.close();
-        }
-    }
-
-    public static void main(String[] args) {
-        Post testPost1 = new Post(1, "Test 1", "Test Link 1", "Test Description 1", LocalDateTime.now());
-        Post testPost2 = new Post(2, "Test 2", "Test Link 2", "Test Description 2", LocalDateTime.now());
-        Post testPost3 = new Post(3, "Test 3", "Test Link 3", "Test Description 3", LocalDateTime.now());
-        try (PsqlStore store = new PsqlStore(readProperties())) {
-            store.save(testPost1);
-            store.save(testPost2);
-            store.save(testPost3);
-            store.getAll().forEach(System.out::println);
-            System.out.println(store.findAll(2));
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }
